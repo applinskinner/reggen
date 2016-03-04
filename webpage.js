@@ -22370,7 +22370,7 @@ $packages["github.com/lucasjones/reggen"] = (function() {
 			/* */ if (re.Max > re.Min) { $s = 76; continue; }
 			/* */ $s = 77; continue;
 			/* if (re.Max > re.Min) { */ case 76:
-				_r$19 = g.rand.Intn(re.Max - re.Min >> 0); /* */ $s = 78; case 78: if($c) { $c = false; _r$19 = _r$19.$blk(); } if (_r$19 && _r$19.$blk !== undefined) { break s; }
+				_r$19 = g.rand.Intn((re.Max - re.Min >> 0) + 1 >> 0); /* */ $s = 78; case 78: if($c) { $c = false; _r$19 = _r$19.$blk(); } if (_r$19 && _r$19.$blk !== undefined) { break s; }
 				count$3 = _r$19;
 			/* } */ case 77:
 			/* */ if (g.debug) { $s = 79; continue; }
