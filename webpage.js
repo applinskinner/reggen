@@ -22497,6 +22497,7 @@ $packages["main"] = (function() {
 			_r$7 = _r$5.SetText(new $String(_r$6)); /* */ $s = 10; case 10: if($c) { $c = false; _r$7 = _r$7.$blk(); } if (_r$7 && _r$7.$blk !== undefined) { break s; }
 			_r$7;
 			console.log("Error: ", err);
+			lastLimit = new $Int64(-1, 4294967295);
 			return;
 		/* } */ case 7:
 		/* */ if ((limit.$high < 0 || (limit.$high === 0 && limit.$low <= 0))) { $s = 11; continue; }
@@ -22508,11 +22509,15 @@ $packages["main"] = (function() {
 			_r$10 = _r$8.SetText(new $String(_r$9)); /* */ $s = 15; case 15: if($c) { $c = false; _r$10 = _r$10.$blk(); } if (_r$10 && _r$10.$blk !== undefined) { break s; }
 			_r$10;
 			console.log("Error: ", err);
+			lastLimit = limit;
 			return;
 		/* } */ case 12:
 		if (regex === last && (limit.$high === lastLimit.$high && limit.$low === lastLimit.$low)) {
+			console.log("not changed, returning");
 			return;
 		}
+		last = regex;
+		lastLimit = limit;
 		_r$11 = reggen.NewGenerator(regex); /* */ $s = 16; case 16: if($c) { $c = false; _r$11 = _r$11.$blk(); } if (_r$11 && _r$11.$blk !== undefined) { break s; }
 		_tuple$1 = _r$11;
 		g = _tuple$1[0];
@@ -22539,8 +22544,6 @@ $packages["main"] = (function() {
 		_r$16 = jq(new sliceType([new $String("#output")])); /* */ $s = 25; case 25: if($c) { $c = false; _r$16 = _r$16.$blk(); } if (_r$16 && _r$16.$blk !== undefined) { break s; }
 		_r$17 = _r$16.SetText(new $String(output)); /* */ $s = 26; case 26: if($c) { $c = false; _r$17 = _r$17.$blk(); } if (_r$17 && _r$17.$blk !== undefined) { break s; }
 		_r$17;
-		last = regex;
-		lastLimit = limit;
 		/* */ $s = -1; case -1: } return; } if ($f === undefined) { $f = { $blk: generate }; } $f.$ptr = $ptr; $f._r = _r; $f._r$1 = _r$1; $f._r$10 = _r$10; $f._r$11 = _r$11; $f._r$12 = _r$12; $f._r$13 = _r$13; $f._r$14 = _r$14; $f._r$15 = _r$15; $f._r$16 = _r$16; $f._r$17 = _r$17; $f._r$2 = _r$2; $f._r$3 = _r$3; $f._r$4 = _r$4; $f._r$5 = _r$5; $f._r$6 = _r$6; $f._r$7 = _r$7; $f._r$8 = _r$8; $f._r$9 = _r$9; $f._tuple = _tuple; $f._tuple$1 = _tuple$1; $f.err = err; $f.g = g; $f.i = i; $f.limit = limit; $f.output = output; $f.regex = regex; $f.$s = $s; $f.$r = $r; return $f;
 	};
 	main = function() {
