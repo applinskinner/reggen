@@ -2,6 +2,7 @@
 package reggen
 
 import (
+	"bytes"
 	"fmt"
 	"math"
 	"math/rand"
@@ -11,9 +12,8 @@ import (
 )
 
 const runeRangeEnd = 0x10ffff
-const printableChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r"
 
-var printableCharsNoNL = printableChars[:len(printableChars)-2]
+var PrintableChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~ \t\n\r"
 
 type state struct {
 	limit int
@@ -26,6 +26,8 @@ type Generator struct {
 }
 
 func (g *Generator) generate(s *state, re *syntax.Regexp) string {
+	var printableCharsNoNL string
+
 	//fmt.Println("re:", re, "sub:", re.Sub)
 	op := re.Op
 	switch op {
@@ -54,8 +56,8 @@ func (g *Generator) generate(s *state, re *syntax.Regexp) string {
 		// pick random char in range (inverse match group)
 		if sum == -1 {
 			possibleChars := []uint8{}
-			for j := 0; j < len(printableChars); j++ {
-				c := printableChars[j]
+			for j := 0; j < len(PrintableChars); j++ {
+				c := PrintableChars[j]
 				//fmt.Printf("Char %c %d\n", c, c)
 				// Check c in range
 				for i := 0; i < len(re.Rune); i += 2 {
@@ -93,8 +95,17 @@ func (g *Generator) generate(s *state, re *syntax.Regexp) string {
 		}
 		return string(ru)
 	case syntax.OpAnyCharNotNL, syntax.OpAnyChar:
-		chars := printableChars
+		chars := PrintableChars
 		if op == syntax.OpAnyCharNotNL {
+			if printableCharsNoNL == "" {
+				var buffer bytes.Buffer
+				for _, printableChar := range PrintableChars {
+					if printableChar != '\n' && printableChar != '\r' {
+						buffer.WriteRune(printableChar)
+					}
+				}
+				printableCharsNoNL = buffer.String()
+			}
 			chars = printableCharsNoNL
 		}
 		c := chars[g.rand.Intn(len(chars))]
